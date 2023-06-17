@@ -115,15 +115,18 @@ const Index: NextPage = () => {
         })
     }
 
-    const removeRecette = (id: string) => {
+    /*const removeRecette = (id: string) => {
         deleteDoc(doc(database, 'recettes', id))
-    }
+    }*/
 
     return (
         <div>
             <Head>
                 <title>Recettes de Maëlis</title>
-                <meta name='description' content='' />
+                <meta
+                    name='description'
+                    content='Mes recettes personnelles, sucrées et salées.'
+                />
             </Head>
 
             <div className='flex flex-col gap-y-8 pt-10'>
