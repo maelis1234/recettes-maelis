@@ -1,28 +1,30 @@
-import Link from 'next/link'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 const Footer = () => {
     return (
-        <footer className='text-sm text-white p-3'>
-            <div className='space-x-4'>
-                <Link
-                    href='https://www.linkedin.com/in/maelis-hammouche/'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    className='text-white'
-                >
-                    <i className='ri-linkedin-fill text-white text-xl hover:text-primary-violet' />
-                </Link>
-                <Link
-                    href='https://github.com/maelis1234'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                >
-                    <i className='ri-github-fill text-white text-xl hover:text-primary-violet' />
-                </Link>
+        <footer className='text-sm font-normal text-white p-3'>
+            <div className='flex flex-row space-x-3'>
+                <div>
+                    <a
+                        href='https://github.com/maelis1234/recettes-maelis'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        <FaGithub className='text-white text-xl cursor-pointer hover:text-purple-500' />
+                    </a>
+                </div>
+                <div>
+                    <a
+                        href='https://www.linkedin.com/in/maelis-hammouche'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        <FaLinkedin className='text-white text-xl cursor-pointer hover:text-purple-500' />
+                    </a>
+                </div>
             </div>
             <div className='flex pt-2'>
-                <i className='ri-copyright-fill pr-1' />
-                <p>2023 par Maëlis Hammouche</p>
+                <p>Made with ❤️ by Maëlis Hammouche</p>
             </div>
         </footer>
     )
