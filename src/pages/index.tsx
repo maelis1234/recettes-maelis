@@ -120,12 +120,12 @@ const Index: NextPage = () => {
             </Head>
 
             <div className='flex flex-col gap-y-8 py-10'>
-                <h1 className='text-center text-pink-50 text-3xl'>
-                    Les Recettes de Maëlis
+                <h1 className='text-center text-pink-50 text-5xl'>
+                    Les Recettes de Maëlis 🍪
                 </h1>
 
                 <button
-                    className='bg-gradient-to-r from-pink-500 to-yellow-500 hover:from-yellow-500 hover:to-pink-500 text-white py-2 px-4 rounded-lg w-64 h-12 text-2xl flex justify-center mx-auto'
+                    className='bg-gradient-to-r from-pink-500 to-yellow-500 hover:from-yellow-500 hover:to-pink-500 text-white py-3 rounded-lg w-64 h-12 text-lg flex justify-center mx-auto'
                     onClick={() => setPopupActive(!popupActive)}
                 >
                     Ajouter une recette
