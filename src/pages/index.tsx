@@ -143,7 +143,7 @@ const Index: NextPage = () => {
 
                 <div className='flex flex-row flex-wrap gap-x-8 gap-y-8 overflow-auto justify-center'>
                     {/*Card Recette*/}
-                    {recettes.map((recette, i) => (
+                    {recettes.map((recette) => (
                         <div
                             key={recette.id}
                             className='flex flex-col gap-y-4 w-96 bg-pink-100 shadow-xl p-3 rounded-lg'
@@ -167,8 +167,8 @@ const Index: NextPage = () => {
                                         </h4>
                                         <ul className='list-disc pl-6'>
                                             {recette.ingredients?.map(
-                                                (ingredient, i) => (
-                                                    <li key={i}>
+                                                (ingredient) => (
+                                                    <li key={ingredient}>
                                                         {ingredient}
                                                     </li>
                                                 )
@@ -181,8 +181,8 @@ const Index: NextPage = () => {
                                         </h4>
                                         <ol className='list-decimal pl-6'>
                                             {recette.instructions.map(
-                                                (instruction, i) => (
-                                                    <li key={i}>
+                                                (instruction) => (
+                                                    <li key={instruction}>
                                                         {instruction}
                                                     </li>
                                                 )
@@ -285,9 +285,9 @@ const Index: NextPage = () => {
                                 >
                                     Ingrédients
                                 </label>{' '}
-                                {form.ingredients.map((ingredient, i) => (
+                                {form.ingredients.map((ingredient, index) => (
                                     <div
-                                        key={i}
+                                        key={ingredient}
                                         className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mt-2'
                                     >
                                         <input
@@ -297,8 +297,8 @@ const Index: NextPage = () => {
                                             className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                                             placeholder='100g de farine'
                                             value={ingredient}
-                                            onChange={(e) =>
-                                                handleIngredient(e, i)
+                                            onChange={(event) =>
+                                                handleIngredient(event, index)
                                             }
                                         />
                                     </div>
@@ -319,9 +319,9 @@ const Index: NextPage = () => {
                                 >
                                     Instructions
                                 </label>{' '}
-                                {form.instructions.map((instruction, i) => (
+                                {form.instructions.map((instruction, index) => (
                                     <div
-                                        key={i}
+                                        key={instruction}
                                         className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md mt-2'
                                     >
                                         <input
@@ -331,8 +331,8 @@ const Index: NextPage = () => {
                                             className='block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6'
                                             placeholder='Mélanger la farine et le sucre.'
                                             value={instruction}
-                                            onChange={(e) =>
-                                                handleInstruction(e, i)
+                                            onChange={(event) =>
+                                                handleInstruction(event, index)
                                             }
                                         />
                                     </div>
