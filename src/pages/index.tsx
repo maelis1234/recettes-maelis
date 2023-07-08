@@ -1,13 +1,7 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { ChangeEvent, useEffect, useState } from 'react'
-import {
-    collection,
-    onSnapshot,
-    doc,
-    addDoc,
-    deleteDoc,
-} from 'firebase/firestore'
+import { collection, onSnapshot, addDoc } from 'firebase/firestore'
 import { database } from '../../firebase.config'
 
 const Index: NextPage = () => {
@@ -115,10 +109,6 @@ const Index: NextPage = () => {
         })
     }
 
-    /*const removeRecette = (id: string) => {
-        deleteDoc(doc(database, 'recettes', id))
-    }*/
-
     return (
         <div>
             <Head>
@@ -129,7 +119,7 @@ const Index: NextPage = () => {
                 />
             </Head>
 
-            <div className='flex flex-col gap-y-8 pt-10'>
+            <div className='flex flex-col gap-y-8 py-10'>
                 <h1 className='text-center text-pink-50 text-3xl'>
                     Les Recettes de Maëlis
                 </h1>
@@ -199,12 +189,6 @@ const Index: NextPage = () => {
                                 >
                                     Voir {recette.viewing ? 'moins' : 'plus'}
                                 </button>
-                                {/*<button
-                                    onClick={() => removeRecette(recette.id)}
-                                    className=' text-white rounded-lg w-20 h-8 text-sm bg-gradient-to-r from-yellow-600 to-red-600'
-                                >
-                                    Supprimer
-                                            </button>*/}
                             </div>
                         </div>
                     ))}
