@@ -124,15 +124,15 @@ const Index: NextPage = () => {
                     Les Recettes de Maëlis 🍪
                 </h1>
 
-                <button
+                {/* <button
                     className='bg-gradient-to-r from-pink-500 to-yellow-500 hover:from-yellow-500 hover:to-pink-500 text-white py-3 rounded-lg w-64 h-12 text-lg flex justify-center mx-auto'
                     onClick={() => setPopupActive(!popupActive)}
                 >
                     Ajouter une recette
-                </button>
+                </button> */}
 
                 <div className='flex flex-row flex-wrap gap-x-8 gap-y-8 overflow-auto justify-center'>
-                    {/*Card Recette*/}
+                    {/* Card Recette */}
                     {recettes.map((recette) => (
                         <div
                             key={recette.id}
