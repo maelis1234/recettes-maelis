@@ -39,7 +39,7 @@ const RecipeCard = ({ recette, handleView }: Props) => {
             <div className='mt-auto pb-1 flex gap-x-6 mx-auto'>
                 <button
                     onClick={() => handleView(recette.id)}
-                    className='bg-gradient-to-r from-green-400 to-blue-500 hover:from-blue-500 hover:to-green-400 text-white rounded-lg w-24 h-8 text-sm'
+                    className='bg-gradient-to-r from-rose-400 to-fuchsia-500 hover:from-fuchsia-500 hover:to-rose-400 text-white rounded-lg w-24 h-8 text-sm'
                 >
                     Voir {recette.viewing ? 'moins' : 'plus'}
                 </button>

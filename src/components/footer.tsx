@@ -10,7 +10,7 @@ const Footer = () => {
                         rel='noopener noreferrer'
                         target='_blank'
                     >
-                        <FaGithub className='text-white text-xl cursor-pointer hover:text-purple-500' />
+                        <FaGithub className='text-white text-xl cursor-pointer hover:text-pink-500' />
                     </a>
                 </div>
                 <div>
@@ -19,7 +19,7 @@ const Footer = () => {
                         rel='noopener noreferrer'
                         target='_blank'
                     >
-                        <FaLinkedin className='text-white text-xl cursor-pointer hover:text-purple-500' />
+                        <FaLinkedin className='text-white text-xl cursor-pointer hover:text-pink-500' />
                     </a>
                 </div>
             </div>

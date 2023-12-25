@@ -1,11 +1,12 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot, or } from 'firebase/firestore'
 import { database } from '../../firebase.config'
-import Header from '@/components/header'
+import HeaderMenu from '@/components/headerMenu'
 import RecipeCard from '@/components/recipeCard'
 import { CategoryEnum, Recette } from '@/utils/interfaces'
+import Footer from '@/components/footer'
 
 const Index: NextPage = () => {
     const [recettes, setRecettes] = useState<Recette[]>([])
@@ -46,11 +47,16 @@ const Index: NextPage = () => {
         setRecettes(recettesClone)
     }
 
-    const handleSelectCategory = (category: CategoryEnum) => {
-        setCategorySelected(category)
-        setRecettesByCategory(
-            recettes.filter((recette) => recette.category === category)
-        )
+    const handleSelectCategory = (category?: CategoryEnum) => {
+        if (category) {
+            setCategorySelected(category)
+            setRecettesByCategory(
+                recettes.filter((recette) => recette.category === category)
+            )
+        } else {
+            setCategorySelected(undefined)
+            setRecettesByCategory([])
+        }
     }
 
     return (
@@ -64,51 +70,13 @@ const Index: NextPage = () => {
             </Head>
 
             <div className='flex flex-col'>
-                <Header />
-                <nav className='h-12 text-white border flex justify-center flex-row align-center space-x-4'>
-                    <button
-                        className={`hover:underline-offset-4 hover:underline focus:underline-offset-4 focus:underline focus:text-pink-800 ${
-                            categorySelected === CategoryEnum.plat &&
-                            'underline-offset-4 underline text-pink-800'
-                        }`}
-                        onClick={() => handleSelectCategory(CategoryEnum.plat)}
-                    >
-                        Plats salés
-                    </button>
-                    <button
-                        className={`hover:underline-offset-4 hover:underline focus:underline-offset-4 focus:underline focus:text-pink-800 ${
-                            categorySelected === CategoryEnum.tarte &&
-                            'underline-offset-4 underline text-pink-800'
-                        }`}
-                        onClick={() => handleSelectCategory(CategoryEnum.tarte)}
-                    >
-                        Tartes
-                    </button>
-                    <button
-                        className={`hover:underline-offset-4 hover:underline focus:underline-offset-4 focus:underline focus:text-pink-800 ${
-                            categorySelected === CategoryEnum.gateau &&
-                            'underline-offset-4 underline text-pink-800'
-                        }`}
-                        onClick={() =>
-                            handleSelectCategory(CategoryEnum.gateau)
-                        }
-                    >
-                        Gâteaux
-                    </button>
-                    <button
-                        className={`hover:underline-offset-4 hover:underline focus:underline-offset-4 focus:underline focus:text-pink-800 ${
-                            categorySelected === CategoryEnum.petitDej &&
-                            'underline-offset-4 underline text-pink-800'
-                        }`}
-                        onClick={() =>
-                            handleSelectCategory(CategoryEnum.petitDej)
-                        }
-                    >
-                        Petit dej
-                    </button>
-                </nav>
+                <HeaderMenu
+                    categorySelected={categorySelected}
+                    handleSelectCategory={handleSelectCategory}
+                />
+
                 {/* Liste des recettes */}
-                <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-16 lg:mx-24'>
+                <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10 lg:w-96'>
                     {recettesByCategory?.length > 0
                         ? recettesByCategory.map((recette: Recette) => (
                               <RecipeCard
@@ -125,6 +93,8 @@ const Index: NextPage = () => {
                               />
                           ))}
                 </div>
+
+                <Footer />
             </div>
         </div>
     )

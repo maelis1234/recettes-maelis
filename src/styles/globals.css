@@ -11,8 +11,18 @@ html {
 
 h1 {
     font-family: 'Cookie', sans-serif;
+
+    @apply text-center text-pink-50 text-5xl my-4
 }
 
 * {
     font-family: 'Comfortaa', sans-serif;
+}
+
+.menu-item:hover {
+    @apply underline underline-offset-4 text-pink-500
+}
+
+.menu-item:focus {
+    @apply underline underline-offset-4 text-pink-500
 }
