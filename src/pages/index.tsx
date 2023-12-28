@@ -8,6 +8,7 @@ import RecipeCard from '@/components/recipeCard'
 import { CategoryEnum, Recette } from '@/utils/interfaces'
 import Footer from '@/components/footer'
 import SignIn from '@/components/signIn'
+import router from 'next/router'
 
 const Index: NextPage = () => {
     const [recettes, setRecettes] = useState<Recette[]>([])
@@ -34,14 +35,12 @@ const Index: NextPage = () => {
                 })
             )
         })
-        // Vérifier si l'utilisateur est connecté
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setUserLoggedIn(!!user)
         })
 
-        // Cleanup de l'abonnement lors du démontage du composant
         return () => unsubscribe()
-    }, [recettesCollectionRef])
+    }, [])
 
     const handleView = (id: string) => {
         const recettesClone = [...recettes]
@@ -72,8 +71,7 @@ const Index: NextPage = () => {
     const handleSignOut = async () => {
         try {
             await auth.signOut()
-            console.log("L'utilisateur est déconnecté avec succès")
-            alert("L'utilisateur est déconnecté avec succès")
+            alert("L'utilisateur a été déconnecté avec succès")
         } catch (error) {
             alert('Erreur de déconnexion')
             console.error('Erreur de déconnexion:', error)
@@ -82,18 +80,18 @@ const Index: NextPage = () => {
 
     const connectedAdminOptions = () => {
         return (
-            <div className='flex flex-row gap-x-4 m-2'>
+            <div className='flex flex-row gap-x-4 m-2 justify-center'>
                 <button
                     onClick={handleSignOut}
-                    className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg w-32 h-8 text-sm'
+                    className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg w-24 h-6 text-xs'
                 >
-                    Se déconnecter
+                    Déconnexion
                 </button>
                 <button
-                    onClick={() => alert('redirection vers la page ajout')}
-                    className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-8 w-48 text-sm'
+                    onClick={() => router.push('/ajout-recette')}
+                    className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-6 w-24 text-xs'
                 >
-                    Ajouter une recette
+                    Ajouter
                 </button>
             </div>
         )
@@ -110,16 +108,6 @@ const Index: NextPage = () => {
             </Head>
 
             <div className='flex flex-col'>
-                <button
-                    onClick={() => setLoginViewing(!loginViewing)}
-                    className='bg-gradient-to-r from-green-400 to-orange-500 hover:from-orange-500 hover:to-green-400 text-white rounded-lg h-8 w-24 text-sm mx-auto'
-                >
-                    {loginViewing ? 'Fermer' : 'Admin'}
-                </button>
-
-                {loginViewing && !userLoggedIn && <SignIn />}
-                {loginViewing && userLoggedIn && connectedAdminOptions()}
-
                 <HeaderMenu
                     categorySelected={categorySelected}
                     handleSelectCategory={handleSelectCategory}
@@ -143,6 +131,16 @@ const Index: NextPage = () => {
                               />
                           ))}
                 </div>
+
+                <button
+                    onClick={() => setLoginViewing(!loginViewing)}
+                    className='bg-gradient-to-r from-green-400 to-orange-500 hover:from-orange-500 hover:to-green-400 text-white rounded-lg h-6 w-20 text-xs mx-auto'
+                >
+                    {loginViewing ? 'Fermer' : 'Admin'}
+                </button>
+
+                {loginViewing && !userLoggedIn && <SignIn />}
+                {loginViewing && userLoggedIn && connectedAdminOptions()}
 
                 <Footer />
             </div>

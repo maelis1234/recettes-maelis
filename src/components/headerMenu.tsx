@@ -22,7 +22,7 @@ const HeaderMenu = ({ categorySelected, handleSelectCategory }: Props) => {
                 <button
                     className={`menu-item ${
                         categorySelected === CategoryEnum.plat &&
-                        'underline-offset-4 underline text-pink-00'
+                        'underline-offset-4 underline text-pink-500'
                     }`}
                     onClick={() => handleSelectCategory(CategoryEnum.plat)}
                 >

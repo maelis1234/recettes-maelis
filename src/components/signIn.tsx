@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { ChangeEventHandler, ReactEventHandler, useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase.config'
 
 function SignIn() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
     const handleSignIn = async () => {
         try {
@@ -21,23 +21,23 @@ function SignIn() {
         <div className='flex flex-row gap-x-4 my-2 justify-center'>
             <input
                 placeholder='Email'
-                className='rounded-sm pl-2 w-48'
+                className='rounded-sm pl-2 w-24 text-xs'
                 type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
             <input
-                placeholder='Mot de passe'
-                className='rounded-sm pl-2 w-36'
+                placeholder='Password'
+                className='rounded-sm pl-2 w-24 text-xs'
                 type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button
                 onClick={handleSignIn}
-                className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg w-28 h-8 text-sm'
+                className='text-xs bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg w-24 h-8 '
             >
-                Se connecter
+                Connexion
             </button>
         </div>
     )
