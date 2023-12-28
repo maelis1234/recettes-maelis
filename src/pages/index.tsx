@@ -1,17 +1,21 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { collection, onSnapshot, or } from 'firebase/firestore'
-import { database } from '../../firebase.config'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { database, auth } from '../../firebase.config'
 import HeaderMenu from '@/components/headerMenu'
 import RecipeCard from '@/components/recipeCard'
 import { CategoryEnum, Recette } from '@/utils/interfaces'
 import Footer from '@/components/footer'
+import SignIn from '@/components/signIn'
 
 const Index: NextPage = () => {
     const [recettes, setRecettes] = useState<Recette[]>([])
     const [recettesByCategory, setRecettesByCategory] = useState<Recette[]>([])
     const [categorySelected, setCategorySelected] = useState<CategoryEnum>()
+    const [userLoggedIn, setUserLoggedIn] = useState(false)
+    const [loginViewing, setLoginViewing] = useState(false)
+
     const recettesCollectionRef = collection(database, 'recettes')
 
     useEffect(() => {
@@ -30,8 +34,14 @@ const Index: NextPage = () => {
                 })
             )
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        // Vérifier si l'utilisateur est connecté
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUserLoggedIn(!!user)
+        })
+
+        // Cleanup de l'abonnement lors du démontage du composant
+        return () => unsubscribe()
+    }, [recettesCollectionRef])
 
     const handleView = (id: string) => {
         const recettesClone = [...recettes]
@@ -59,6 +69,36 @@ const Index: NextPage = () => {
         }
     }
 
+    const handleSignOut = async () => {
+        try {
+            await auth.signOut()
+            console.log("L'utilisateur est déconnecté avec succès")
+            alert("L'utilisateur est déconnecté avec succès")
+        } catch (error) {
+            alert('Erreur de déconnexion')
+            console.error('Erreur de déconnexion:', error)
+        }
+    }
+
+    const connectedAdminOptions = () => {
+        return (
+            <div className='flex flex-row gap-x-4 m-2'>
+                <button
+                    onClick={handleSignOut}
+                    className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg w-32 h-8 text-sm'
+                >
+                    Se déconnecter
+                </button>
+                <button
+                    onClick={() => alert('redirection vers la page ajout')}
+                    className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-8 w-48 text-sm'
+                >
+                    Ajouter une recette
+                </button>
+            </div>
+        )
+    }
+
     return (
         <div>
             <Head>
@@ -70,6 +110,16 @@ const Index: NextPage = () => {
             </Head>
 
             <div className='flex flex-col'>
+                <button
+                    onClick={() => setLoginViewing(!loginViewing)}
+                    className='bg-gradient-to-r from-green-400 to-orange-500 hover:from-orange-500 hover:to-green-400 text-white rounded-lg h-8 w-24 text-sm mx-auto'
+                >
+                    {loginViewing ? 'Fermer' : 'Admin'}
+                </button>
+
+                {loginViewing && !userLoggedIn && <SignIn />}
+                {loginViewing && userLoggedIn && connectedAdminOptions()}
+
                 <HeaderMenu
                     categorySelected={categorySelected}
                     handleSelectCategory={handleSelectCategory}
