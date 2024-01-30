@@ -114,7 +114,7 @@ const Index: NextPage = () => {
                 />
 
                 {/* Liste des recettes */}
-                <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10 lg:w-96'>
+                <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10 lg:mx-96'>
                     {recettesByCategory?.length > 0
                         ? recettesByCategory.map((recette: Recette) => (
                               <RecipeCard
