@@ -4,9 +4,21 @@ import { collection, addDoc } from 'firebase/firestore'
 import { database } from '../../firebase.config'
 import Head from 'next/head'
 import router from 'next/router'
+import Select from 'react-select'
+import { toast } from 'react-toastify'
+import Button from '@/components/button'
+import { CategoryEnum } from '@/utils/interfaces'
+import Footer from '@/components/footer'
 
 const AjoutRecette: NextPage = () => {
     const recettesCollectionRef = collection(database, 'recettes')
+
+    const categories = [
+        { label: 'Salé', value: CategoryEnum.plat },
+        { label: 'Tartes', value: CategoryEnum.tarte },
+        { label: 'Gâteaux', value: CategoryEnum.gateau },
+        { label: 'Petit dej', value: CategoryEnum.petitDej },
+    ]
 
     const [form, setForm] = useState({
         titre: '',
@@ -16,16 +28,14 @@ const AjoutRecette: NextPage = () => {
         instructions: [''],
     })
 
-    const handleChangeIngredients = (index: number, value: string) => {
-        const updatedIngredients = [...form.ingredients]
-        updatedIngredients[index] = value
-        setForm({ ...form, ingredients: updatedIngredients })
-    }
-
-    const handleChangeInstructions = (index: number, value: string) => {
-        const updatedInstructions = [...form.instructions]
-        updatedInstructions[index] = value
-        setForm({ ...form, instructions: updatedInstructions })
+    const handleChangeField = (
+        index: number,
+        value: string,
+        type: 'ingredients' | 'instructions'
+    ) => {
+        const updatedFields = [...form[type]]
+        updatedFields[index] = value
+        setForm({ ...form, [type]: updatedFields })
     }
 
     const handleAddField = (type: 'ingredients' | 'instructions') => {
@@ -44,7 +54,6 @@ const AjoutRecette: NextPage = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
         if (
             !form.titre ||
             form.description.length === 0 ||
@@ -52,13 +61,12 @@ const AjoutRecette: NextPage = () => {
             form.ingredients.length === 0 ||
             form.instructions.length === 0
         ) {
-            alert('Merci de remplir tous les champs')
+            toast.error('Merci de remplir tous les champs.')
             return
         }
 
         await addDoc(recettesCollectionRef, form)
-
-        alert('Recette ajoutée avec succès')
+        toast('🧁 Recette ajoutée avec succès !')
         setForm({
             titre: '',
             description: '',
@@ -77,22 +85,26 @@ const AjoutRecette: NextPage = () => {
                     content='Mes recettes personnelles, sucrées et salées.'
                 />
             </Head>
-            <div className='m-4'>
-                <h1>Ajouter une recette</h1>
-                <button
-                    onClick={() => {
+            <h1>Ajouter une recette</h1>
+            <div className='flex flex-col items-center h-screen'>
+                <Button
+                    label="Retour à l'accueil"
+                    className='bg-gradient-to-r from-blue-300 to-pink-400 hover:from-pink-400 hover:to-blue-300 text-white rounded-lg h-8 w-36 text-sm mb-4'
+                    type='button'
+                    handleClick={() => {
                         router.push('/')
                     }}
-                    className='bg-gradient-to-r from-blue-300 to-pink-400 hover:from-pink-400 hover:to-blue-300 text-white rounded-lg h-8 w-36 text-sm mb-4'
+                />
+                <form
+                    onSubmit={handleSubmit}
+                    className='flex flex-col gap-y-4 bg-pink-100 p-4 rounded-lg w-96 mb-12'
                 >
-                    Retour à l'accueil
-                </button>
-                <form onSubmit={handleSubmit} className='flex flex-col gap-y-4'>
                     <div className='flex flex-col w-72'>
-                        <label>Titre de la recette</label>
+                        <label htmlFor='titre'>Titre de la recette</label>
                         <input
-                            className='rounded-md'
+                            className='rounded-md border border-gray-300 h-8'
                             type='text'
+                            id='titre'
                             name='titre'
                             value={form.titre}
                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -102,13 +114,13 @@ const AjoutRecette: NextPage = () => {
                     </div>
 
                     <div className='flex flex-col w-72'>
-                        <label>Description</label>
-                        <input
-                            className='rounded-md'
-                            type='text'
+                        <label htmlFor='description'>Description</label>
+                        <textarea
+                            id='description'
+                            className='rounded-md h-16 border border-gray-300'
                             name='description'
                             value={form.description}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                                 setForm({
                                     ...form,
                                     description: e.target.value,
@@ -118,21 +130,21 @@ const AjoutRecette: NextPage = () => {
                     </div>
 
                     <div className='flex flex-col w-72'>
-                        <label>Catégorie</label>
-                        <select
-                            className='rounded-md'
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        <label htmlFor='category'>Catégorie</label>
+                        <Select
+                            options={categories}
+                            onChange={(selectedOption) =>
                                 setForm({
                                     ...form,
-                                    category: e.target.value,
+                                    category: selectedOption?.value ?? '',
                                 })
                             }
-                        >
-                            <option value='tarte'>Tarte</option>
-                            <option value='plat'>Salé</option>
-                            <option value='gateau'>Gâteau</option>
-                            <option value='petitDej'>Petit dej</option>
-                        </select>
+                            inputValue={''}
+                            placeholder='Choisir une catégorie'
+                            value={categories.find(
+                                (option) => option.value === form.category
+                            )}
+                        />
                     </div>
 
                     <label>
@@ -140,87 +152,92 @@ const AjoutRecette: NextPage = () => {
                         {form.ingredients.map((ingredient, index) => (
                             <div key={index} className='flex items-center'>
                                 <input
-                                    className='ml-4 mt-2 rounded-md'
+                                    className='mt-2 rounded-md h-8'
                                     name={`ingredients-${index}`}
                                     value={ingredient}
                                     onChange={(
                                         e: ChangeEvent<HTMLInputElement>
                                     ) =>
-                                        handleChangeIngredients(
+                                        handleChangeField(
                                             index,
-                                            e.target.value
+                                            e.target.value,
+                                            'ingredients'
                                         )
                                     }
                                 />
-                                <button
-                                    className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg h-6 w-20 text-xs ml-4'
-                                    type='button'
-                                    onClick={() =>
-                                        handleRemoveField(index, 'ingredients')
-                                    }
-                                >
-                                    Supprimer
-                                </button>
+                                {index !== 0 && (
+                                    <Button
+                                        label='x'
+                                        className='remove-field-btn'
+                                        type='button'
+                                        handleClick={() =>
+                                            handleRemoveField(
+                                                index,
+                                                'ingredients'
+                                            )
+                                        }
+                                    />
+                                )}
                             </div>
                         ))}
-                        <button
-                            className='bg-gradient-to-r from-blue-400 to-green-500 hover:from-green-500 hover:to-blue-400 text-white rounded-lg h-6 w-36 text-xs ml-4 mt-2'
+                        <Button
+                            label='+ Ingrédient'
+                            className='add-field-btn'
                             type='button'
-                            onClick={() => handleAddField('ingredients')}
-                        >
-                            Ajouter ingrédient
-                        </button>
+                            handleClick={() => handleAddField('ingredients')}
+                        />
                     </label>
                     <label>
                         Instructions
                         {form.instructions.map((instruction, index) => (
-                            <div
-                                key={index}
-                                className='flex flex-row gap-y-2 w-96'
-                            >
+                            <div key={index}>
                                 <input
-                                    className='ml-4 mt-2 rounded-md'
+                                    className='mt-2 rounded-md h-8'
                                     name={`instructions-${index}`}
                                     value={instruction}
                                     onChange={(
                                         e: ChangeEvent<HTMLInputElement>
                                     ) =>
-                                        handleChangeInstructions(
+                                        handleChangeField(
                                             index,
-                                            e.target.value
+                                            e.target.value,
+                                            'instructions'
                                         )
                                     }
                                 />
-                                <button
-                                    className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg h-6 w-20 text-xs ml-4
-                                
-                                xs'
-                                    type='button'
-                                    onClick={() =>
-                                        handleRemoveField(index, 'instructions')
-                                    }
-                                >
-                                    Supprimer
-                                </button>
+                                {index !== 0 && (
+                                    <Button
+                                        label='x'
+                                        className='remove-field-btn'
+                                        type='button'
+                                        handleClick={() =>
+                                            handleRemoveField(
+                                                index,
+                                                'instructions'
+                                            )
+                                        }
+                                    />
+                                )}
                             </div>
                         ))}
-                        <button
-                            className='bg-gradient-to-r from-blue-400 to-pink-500 hover:from-pink-500 hover:to-blue-400 text-white rounded-lg h-6 w-36 text-xs ml-4 mt-2'
+                        <Button
+                            label='+ Instruction'
+                            className='add-field-btn'
                             type='button'
-                            onClick={() => handleAddField('instructions')}
-                        >
-                            Ajouter instruction
-                        </button>
+                            handleClick={() => handleAddField('instructions')}
+                        />
                     </label>
                     <br />
-                    <button
+                    <Button
+                        label='Ajouter la recette'
                         type='submit'
                         className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-8 w-36 text-sm'
-                    >
-                        Ajouter la recette
-                    </button>
+                        handleClick={() => {}}
+                    />
                 </form>
             </div>
+
+            <Footer />
         </>
     )
 }

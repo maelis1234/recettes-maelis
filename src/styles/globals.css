@@ -19,10 +19,23 @@ h1 {
     font-family: 'Comfortaa', sans-serif;
 }
 
+textarea {
+    resize: none !important;
+    outline: none !important;
+}
+
 .menu-item:hover {
     @apply underline underline-offset-4 text-pink-500
 }
 
 .menu-item:focus {
     @apply underline underline-offset-4 text-pink-500
+}
+
+.add-field-btn {
+    @apply bg-gradient-to-r from-blue-400 to-pink-500 hover:from-pink-500 hover:to-blue-400 text-white rounded-lg h-6 w-24 text-xs mt-2
+}
+
+.remove-field-btn {
+    @apply bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg h-4 w-4 text-xs ml-4 mt-2
 }

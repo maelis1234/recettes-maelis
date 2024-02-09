@@ -16,6 +16,7 @@ const Index: NextPage = () => {
     const [categorySelected, setCategorySelected] = useState<CategoryEnum>()
     const [filteredRecettes, setFilteredRecettes] = useState<Recette[]>([])
     const [isSearching, setIsSearching] = useState<boolean>(false)
+    const [resetSearch, setResetSearch] = useState<boolean>(false)
 
     const recettesCollectionRef = collection(database, 'recettes')
 
@@ -58,6 +59,7 @@ const Index: NextPage = () => {
                 recettes.filter((recette) => recette.category === category)
             )
 
+            setResetSearch(true)
             setIsSearching(false)
             setFilteredRecettes([])
         } else {
@@ -66,27 +68,43 @@ const Index: NextPage = () => {
         }
     }
 
-    const handleSearch = (searchTerm: string) => {
-        setIsSearching(true)
-        // On enlève les accents pour la recherche et on divise en mots
-        const searchWords = removeAccents(searchTerm).toLowerCase().split(' ')
+    const handleSearch = (onSearch: string) => {
+        if (onSearch.trim() !== '') {
+            setIsSearching(true)
 
-        const recettesToFilter = categorySelected
-            ? recettesByCategory
-            : recettes
+            // On enlève les accents pour la recherche et on divise en mots
+            const searchWords = removeAccents(onSearch).toLowerCase().split(' ')
 
-        const filtered = recettesToFilter.filter((recette) => {
-            // Vérifier si au moins un mot est présent dans le titre ou la description
-            return searchWords.some((word) => {
-                return (
-                    removeAccents(recette.titre).toLowerCase().includes(word) ||
-                    removeAccents(recette.description)
-                        .toLowerCase()
-                        .includes(word)
-                )
+            const recettesToFilter = categorySelected
+                ? recettesByCategory
+                : recettes
+
+            const filtered = recettesToFilter.filter((recette) => {
+                // Vérifier si au moins un mot est présent dans le titre ou la description
+                return searchWords.some((word) => {
+                    return (
+                        removeAccents(recette.titre)
+                            .toLowerCase()
+                            .includes(word) ||
+                        removeAccents(recette.description)
+                            .toLowerCase()
+                            .includes(word)
+                    )
+                })
             })
-        })
-        setFilteredRecettes(filtered)
+            setFilteredRecettes(filtered)
+            setIsSearching(true)
+        } else {
+            setFilteredRecettes([])
+        }
+    }
+
+    const handleClearSearch = () => {
+        setIsSearching(false)
+    }
+
+    const handleResetSearch = (resetSearch: boolean) => {
+        setResetSearch(resetSearch)
     }
 
     const handleDisplayRecettes = () => {
@@ -113,9 +131,10 @@ const Index: NextPage = () => {
                     handleSelectCategory={handleSelectCategory}
                 />
                 <SearchBar
-                    onSearch={(text) => {
-                        handleSearch(text)
-                    }}
+                    reset={resetSearch}
+                    onSearch={handleSearch}
+                    onClearSearch={handleClearSearch}
+                    resetSearch={handleResetSearch}
                 />
 
                 {/* Liste des recettes */}

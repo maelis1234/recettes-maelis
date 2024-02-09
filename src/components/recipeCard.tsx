@@ -1,4 +1,5 @@
 import { Recette } from '@/utils/interfaces'
+import Button from './button'
 
 interface Props {
     recette: Recette
@@ -37,12 +38,12 @@ const RecipeCard = ({ recette, handleView }: Props) => {
             )}
 
             <div className='mt-auto pb-1 flex gap-x-6 mx-auto'>
-                <button
-                    onClick={() => handleView(recette.id)}
+                <Button
+                    label={recette.viewing ? 'Voir moins' : 'Voir plus'}
+                    type='button'
                     className='bg-gradient-to-r from-rose-400 to-fuchsia-500 hover:from-fuchsia-500 hover:to-rose-400 text-white rounded-lg w-24 h-8 text-sm'
-                >
-                    Voir {recette.viewing ? 'moins' : 'plus'}
-                </button>
+                    handleClick={() => handleView(recette.id)}
+                />
             </div>
         </div>
     )

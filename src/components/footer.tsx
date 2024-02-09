@@ -3,6 +3,8 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { auth } from '../../firebase.config'
 import router from 'next/router'
 import SignIn from './signIn'
+import Button from './button'
+import { toast } from 'react-toastify'
 
 const Footer = () => {
     const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false)
@@ -12,16 +14,15 @@ const Footer = () => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setUserLoggedIn(!!user)
         })
-
         return () => unsubscribe()
     }, [])
 
     const handleSignOut = async () => {
         try {
             await auth.signOut()
-            alert("L'utilisateur a été déconnecté avec succès")
+            toast.success('Déconnexion réussie !')
         } catch (error) {
-            alert('Erreur de déconnexion')
+            toast.error('Erreur de déconnexion, veuillez réessayer.')
             console.error('Erreur de déconnexion:', error)
         }
     }
@@ -29,29 +30,30 @@ const Footer = () => {
     const connectedAdminOptions = () => {
         return (
             <div className='flex flex-row gap-x-4 mb-2'>
-                <button
-                    onClick={handleSignOut}
+                <Button
+                    handleClick={() => handleSignOut()}
+                    label='Déconnexion'
+                    type='button'
                     className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white rounded-lg w-24 h-6 text-xs'
-                >
-                    Déconnexion
-                </button>
-                <button
-                    onClick={() => router.push('/ajout-recette')}
-                    className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-6 w-24 text-xs'
-                >
-                    Ajouter
-                </button>
+                />
+
+                <Button
+                    label='Ajouter une recette'
+                    type='button'
+                    handleClick={() => router.push('/ajout-recette')}
+                    className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-6 w-32 text-xs'
+                />
             </div>
         )
     }
     return (
         <footer className='text-sm font-normal text-white p-3'>
-            <button
-                onClick={() => setLoginViewing(!loginViewing)}
+            <Button
+                label={loginViewing ? 'Fermer' : 'Admin'}
+                type='button'
+                handleClick={() => setLoginViewing(!loginViewing)}
                 className='bg-gradient-to-r from-green-400 to-orange-500 hover:from-orange-500 hover:to-green-400 text-white rounded-lg h-6 w-20 text-xs mx-auto mb-2'
-            >
-                {loginViewing ? 'Fermer' : 'Admin'}
-            </button>
+            />
 
             {loginViewing &&
                 (userLoggedIn ? connectedAdminOptions() : <SignIn />)}
