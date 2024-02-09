@@ -6,55 +6,30 @@ interface Props {
 }
 
 const HeaderMenu = ({ categorySelected, handleSelectCategory }: Props) => {
+    const categories = [
+        { label: 'Toutes', value: undefined },
+        { label: 'Salé', value: CategoryEnum.plat },
+        { label: 'Tartes', value: CategoryEnum.tarte },
+        { label: 'Gâteaux', value: CategoryEnum.gateau },
+        { label: 'Petit dej', value: CategoryEnum.petitDej },
+    ]
+
     return (
         <>
-            <h1 className=''>Les Recettes de Maëlis 🍪</h1>
+            <h1>Les Recettes de Maëlis 🍪</h1>
             <nav className='h-12 text-white border border-pink-200 flex justify-center flex-row align-center space-x-4 rounded-xl mx-2'>
-                <button
-                    className={`menu-item ${
-                        categorySelected === undefined &&
-                        'underline-offset-4 underline text-pink-500'
-                    }`}
-                    onClick={() => handleSelectCategory(undefined)}
-                >
-                    Toutes
-                </button>
-                <button
-                    className={`menu-item ${
-                        categorySelected === CategoryEnum.plat &&
-                        'underline-offset-4 underline text-pink-500'
-                    }`}
-                    onClick={() => handleSelectCategory(CategoryEnum.plat)}
-                >
-                    Salé
-                </button>
-                <button
-                    className={`menu-item ${
-                        categorySelected === CategoryEnum.tarte &&
-                        'underline-offset-4 underline text-pink-500'
-                    }`}
-                    onClick={() => handleSelectCategory(CategoryEnum.tarte)}
-                >
-                    Tartes
-                </button>
-                <button
-                    className={`menu-item ${
-                        categorySelected === CategoryEnum.gateau &&
-                        'underline-offset-4 underline text-pink-500'
-                    }`}
-                    onClick={() => handleSelectCategory(CategoryEnum.gateau)}
-                >
-                    Gâteaux
-                </button>
-                <button
-                    className={`menu-item ${
-                        categorySelected === CategoryEnum.petitDej &&
-                        'underline-offset-4 underline text-pink-500'
-                    }`}
-                    onClick={() => handleSelectCategory(CategoryEnum.petitDej)}
-                >
-                    Petit dej
-                </button>
+                {categories.map(({ label, value }) => (
+                    <button
+                        key={label}
+                        className={`menu-item ${
+                            categorySelected === value &&
+                            'underline-offset-4 underline text-pink-500'
+                        }`}
+                        onClick={() => handleSelectCategory(value)}
+                    >
+                        {label}
+                    </button>
+                ))}
             </nav>
         </>
     )
