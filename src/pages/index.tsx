@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { database } from '../../firebase.config'
 import HeaderMenu from '@/components/headerMenu'
@@ -20,7 +20,7 @@ const Index: NextPage = () => {
 
     const recettesCollectionRef = collection(database, 'recettes')
 
-    useEffect(() => {
+    useMemo(() => {
         onSnapshot(recettesCollectionRef, (snapshot) => {
             setRecettes(
                 snapshot.docs.map((doc) => {
