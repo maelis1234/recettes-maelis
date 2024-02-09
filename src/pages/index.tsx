@@ -16,6 +16,7 @@ const Index: NextPage = () => {
     const [categorySelected, setCategorySelected] = useState<CategoryEnum>()
     const [filteredRecettes, setFilteredRecettes] = useState<Recette[]>([])
     const [isSearching, setIsSearching] = useState<boolean>(false)
+    const [resetSearch, setResetSearch] = useState<boolean>(false)
 
     const recettesCollectionRef = collection(database, 'recettes')
 
@@ -58,6 +59,7 @@ const Index: NextPage = () => {
                 recettes.filter((recette) => recette.category === category)
             )
 
+            setResetSearch(true)
             setIsSearching(false)
             setFilteredRecettes([])
         } else {
@@ -66,10 +68,13 @@ const Index: NextPage = () => {
         }
     }
 
-    const handleSearch = (searchTerm: string) => {
-        setIsSearching(true)
+    const handleSearch = (onSearch: string) => {
+        if (onSearch.trim() !== '') {
+            setIsSearching(true)
+        }
+
         // On enlève les accents pour la recherche et on divise en mots
-        const searchWords = removeAccents(searchTerm).toLowerCase().split(' ')
+        const searchWords = removeAccents(onSearch).toLowerCase().split(' ')
 
         const recettesToFilter = categorySelected
             ? recettesByCategory
@@ -86,7 +91,12 @@ const Index: NextPage = () => {
                 )
             })
         })
+
         setFilteredRecettes(filtered)
+    }
+
+    const handleClearSearch = () => {
+        setIsSearching(false)
     }
 
     const handleDisplayRecettes = () => {
@@ -95,6 +105,10 @@ const Index: NextPage = () => {
         } else {
             return categorySelected ? recettesByCategory : recettes
         }
+    }
+
+    const handleResetSearch = (resetSearch: boolean) => {
+        setResetSearch(resetSearch)
     }
 
     return (
@@ -113,9 +127,10 @@ const Index: NextPage = () => {
                     handleSelectCategory={handleSelectCategory}
                 />
                 <SearchBar
-                    onSearch={(text) => {
-                        handleSearch(text)
-                    }}
+                    reset={resetSearch}
+                    onSearch={handleSearch}
+                    onClearSearch={handleClearSearch}
+                    resetSearch={handleResetSearch}
                 />
 
                 {/* Liste des recettes */}

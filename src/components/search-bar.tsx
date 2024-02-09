@@ -2,13 +2,22 @@ import { useEffect, useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 
 interface Props {
+    // pour réinitialiser la barre de recherche
+    reset: boolean
     onSearch: (text: string) => void
+    onClearSearch: () => void
+    // Renvoi l'information du boolean au parent
+    resetSearch: (bool: boolean) => void
 }
 
-const SearchBar = ({ onSearch }: Props) => {
+const SearchBar = ({ reset, onSearch, onClearSearch, resetSearch }: Props) => {
     const [searchedValue, setSearchedValue] = useState<string>('')
 
     useEffect(() => {
+        if (searchedValue.trim() === '') {
+            onClearSearch()
+        }
+
         onSearch(searchedValue)
     }, [searchedValue])
 
@@ -16,6 +25,11 @@ const SearchBar = ({ onSearch }: Props) => {
         const { value } = event.target
         setSearchedValue(value)
     }
+
+    useEffect(() => {
+        setSearchedValue('')
+        resetSearch(false)
+    }, [reset])
 
     return (
         <div className='mx-auto lg:w-96 w-72'>
