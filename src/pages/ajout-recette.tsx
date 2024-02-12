@@ -8,7 +8,6 @@ import Select from 'react-select'
 import { toast } from 'react-toastify'
 import Button from '@/components/button'
 import { CategoryEnum } from '@/utils/interfaces'
-import Footer from '@/components/footer'
 
 const AjoutRecette: NextPage = () => {
     const recettesCollectionRef = collection(database, 'recettes')
@@ -236,8 +235,6 @@ const AjoutRecette: NextPage = () => {
                     />
                 </form>
             </div>
-
-            <Footer />
         </>
     )
 }

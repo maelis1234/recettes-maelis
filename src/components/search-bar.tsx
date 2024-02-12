@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 import Button from './button'
+import { CiSearch } from 'react-icons/ci'
 
 interface Props {
     reset: boolean
@@ -33,7 +34,7 @@ const SearchBar = ({ reset, onSearch, onClearSearch, resetSearch }: Props) => {
         <div className='mx-auto lg:w-96 w-72'>
             <div className='relative inline-block w-full mt-4'>
                 <span className='absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-700'>
-                    <FaSearch className='text-gray-400' />
+                    <CiSearch className='text-gray-400 text-xl' />
                 </span>
                 <input
                     type='text'

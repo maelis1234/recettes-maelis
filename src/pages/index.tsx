@@ -6,9 +6,9 @@ import { database } from '../../firebase.config'
 import HeaderMenu from '@/components/headerMenu'
 import RecipeCard from '@/components/recipeCard'
 import { CategoryEnum, Recette } from '@/utils/interfaces'
-import Footer from '@/components/footer'
 import SearchBar from '@/components/search-bar'
 import { removeAccents } from '@/utils/remove-accents.utils'
+import { useAuth } from '@/auth/AuthContext'
 
 const Index: NextPage = () => {
     const [recettes, setRecettes] = useState<Recette[]>([])
@@ -40,7 +40,6 @@ const Index: NextPage = () => {
 
     const handleView = (id: string) => {
         const recettesClone = [...recettes]
-
         recettesClone.forEach((recette: { id: string; viewing: boolean }) => {
             if (recette.id === id) {
                 recette.viewing = !recette.viewing
@@ -115,6 +114,8 @@ const Index: NextPage = () => {
         }
     }
 
+    const connectedUser = useAuth()
+
     return (
         <div>
             <Head>
@@ -136,7 +137,6 @@ const Index: NextPage = () => {
                     onClearSearch={handleClearSearch}
                     resetSearch={handleResetSearch}
                 />
-
                 {/* Liste des recettes */}
                 <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10 lg:mx-96'>
                     {handleDisplayRecettes().map((recette: Recette) => (
@@ -147,8 +147,6 @@ const Index: NextPage = () => {
                         />
                     ))}
                 </div>
-
-                <Footer />
             </div>
         </div>
     )

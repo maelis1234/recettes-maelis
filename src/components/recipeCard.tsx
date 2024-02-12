@@ -1,5 +1,7 @@
 import { Recette } from '@/utils/interfaces'
 import Button from './button'
+import { useAuth } from '@/auth/AuthContext'
+import { CiEdit, CiTrash } from 'react-icons/ci'
 
 interface Props {
     recette: Recette
@@ -7,11 +9,26 @@ interface Props {
 }
 
 const RecipeCard = ({ recette, handleView }: Props) => {
+    const connectedUser = useAuth()
+
     return (
         <div
             key={recette.id}
             className='flex flex-col gap-y-4 w-full bg-pink-100 shadow-xl p-3 rounded-lg'
         >
+            {connectedUser.currentUser !== null && (
+                <div className='flex flex-row justify-between -mb-8'>
+                    <CiEdit
+                        className='text-pink-800 text-2xl cursor-pointer'
+                        onClick={() => console.log('modifier')}
+                    />
+                    <CiTrash
+                        className='text-pink-800 text-2xl cursor-pointer'
+                        onClick={() => console.log('supprimer')}
+                    />
+                </div>
+            )}
+
             <h2 className='text-center font-semibold'>{recette.titre}</h2>
 
             {recette.viewing && (
@@ -36,7 +53,6 @@ const RecipeCard = ({ recette, handleView }: Props) => {
                     </div>
                 </div>
             )}
-
             <div className='mt-auto pb-1 flex gap-x-6 mx-auto'>
                 <Button
                     label={recette.viewing ? 'Voir moins' : 'Voir plus'}
