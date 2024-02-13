@@ -11,16 +11,16 @@ const profilePicture = granolaImage
 const Header = () => {
     const connectedUser = useAuth()
 
-    const [isMenuOpen, setMenuOpen] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
     const handleMenuToggle = () => {
-        setMenuOpen(!isMenuOpen)
+        setIsMenuOpen(!isMenuOpen)
     }
 
     const handleClickOutside = (event: any) => {
         if (menuRef.current && !menuRef.current.contains(event.target)) {
-            setMenuOpen(false)
+            setIsMenuOpen(false)
         }
     }
 
@@ -33,25 +33,19 @@ const Header = () => {
 
     return (
         <nav>
-            <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1'>
-                <a
-                    href='/'
-                    className='flex items-center space-x-3 rtl:space-x-reverse'
-                >
+            <div className='flex flex-row items-center justify-between p-1 px-2'>
+                <a href='/'>
                     <h1>🧁 Les recettes de Maëlis</h1>
                 </a>
                 {connectedUser.currentUser !== null ? (
-                    <div
-                        className='flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'
-                        ref={menuRef}
-                    >
+                    <div ref={menuRef}>
                         <button
                             type='button'
-                            className='flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300'
+                            className='flex text-sm rounded-full'
                             onClick={handleMenuToggle}
                         >
                             <Image
-                                className='w-16 h-16 rounded-full'
+                                className='w-14 h-14 rounded-full'
                                 src={profilePicture}
                                 alt='user photo'
                                 width={500}
@@ -59,49 +53,45 @@ const Header = () => {
                             />
                         </button>
                         {isMenuOpen && (
-                            <div className='absolute top-16 right-4 bg-white rounded-md shadow-md flex flex-col z-10'>
-                                <>
-                                    <div className='p-4 flex flex-col gap-y-4'>
-                                        <div>
-                                            Bienvenue{' '}
-                                            {connectedUser.currentUser.email}
-                                        </div>
-                                        <div className='flex flex-row justify-center'>
-                                            <Button
-                                                label='+ Ajouter une recette'
-                                                type='button'
-                                                handleClick={() =>
-                                                    router.push(
-                                                        '/ajout-recette'
-                                                    )
-                                                }
-                                                className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-6 w-36 text-xs'
-                                            />
-                                        </div>
+                            <div className='absolute top-16 right-4 bg-white rounded-md shadow-md flex flex-col z-10 text-sm'>
+                                <div className='p-4 flex flex-col gap-y-4'>
+                                    <div>
+                                        Bienvenue{' '}
+                                        {connectedUser.currentUser.email}
                                     </div>
-                                    <div className=''>
+                                    <div className='flex flex-row justify-center'>
                                         <Button
-                                            handleClick={() => handleSignOut()}
-                                            label='Déconnexion'
+                                            label='+ Ajouter une recette'
                                             type='button'
-                                            className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white w-full h-6 text-xs'
+                                            handleClick={() =>
+                                                router.push('/ajout-recette')
+                                            }
+                                            className='bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg h-6 w-36 text-xs'
                                         />
                                     </div>
-                                </>
+                                </div>
+                                <div className=''>
+                                    <Button
+                                        handleClick={() => handleSignOut()}
+                                        label='Déconnexion'
+                                        type='button'
+                                        className='bg-gradient-to-r from-red-400 to-yellow-500 hover:from-yellow-500 hover:to-red-400 text-white w-full h-6 text-xs'
+                                    />
+                                </div>
                             </div>
                         )}
                     </div>
                 ) : (
-                    <div className='flex flex-col gap-y-1'>
+                    <div className='flex flex-col lg:flex-row lg:gap-x-4 gap-y-1'>
                         <Button
                             label='Connexion'
-                            className='text-sm bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg w-24 h-8 '
+                            className='text-xs lg:text-sm bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-lg w-20 lg:w-24 h-6 lg:h-8 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 duration-300'
                             type='button'
                             handleClick={() => router.push('/connexion')}
                         />
                         <Button
                             label='Inscription'
-                            className='text-sm bg-gradient-to-r from-blue-400 to-green-500 hover:from-green-500 hover:to-blue-400 text-white rounded-lg w-24 h-8 '
+                            className='text-xs lg:text-sm bg-gradient-to-r from-blue-400 to-green-500 hover:from-green-500 hover:to-blue-400 text-white rounded-lg w-20 h-6 lg:w-24 lg:h-8 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 duration-300'
                             type='button'
                             handleClick={() => router.push('/inscription')}
                         />

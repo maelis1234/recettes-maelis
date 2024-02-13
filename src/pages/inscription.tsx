@@ -1,4 +1,5 @@
 import { handleSignUp } from '@/auth/authFunctions'
+import Button from '@/components/button'
 import { NextPage } from 'next'
 import router from 'next/router'
 import { ChangeEvent, FormEvent, useState } from 'react'
@@ -29,16 +30,19 @@ const Inscription: NextPage = () => {
 
     return (
         <>
-            <h1>Inscription</h1>
+            <h2>Inscription</h2>
             <form className='max-w-sm mx-auto' onSubmit={handleSubmit}>
                 <div className='mb-5'>
-                    <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    <label
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                        htmlFor='email'
+                    >
                         Adresse email
                     </label>
                     <input
                         type='email'
                         id='email'
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                         placeholder='nom@mail.com'
                         required
                         value={form.email}
@@ -48,13 +52,16 @@ const Inscription: NextPage = () => {
                     />
                 </div>
                 <div className='mb-5'>
-                    <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    <label
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                        htmlFor='password'
+                    >
                         Mot de passe
                     </label>
                     <input
                         type='password'
                         id='password'
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
                         required
                         value={form.password}
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -63,13 +70,16 @@ const Inscription: NextPage = () => {
                     />
                 </div>
                 <div className='mb-5'>
-                    <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    <label
+                        htmlFor='confirmationPassword'
+                        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                    >
                         Confirmation du mot de passe
                     </label>
                     <input
                         type='password'
                         id='confirmationPassword'
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 '
                         required
                         value={form.confirmationPassword}
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -81,22 +91,20 @@ const Inscription: NextPage = () => {
                     />
                 </div>
 
-                <div className='flex flex-row justify-between'>
-                    <button
+                <div className='flex flex-col-reverse gap-y-4'>
+                    <Button
                         type='button'
-                        className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                        onClick={() => router.push('/')}
-                    >
-                        Retour
-                    </button>
+                        className='text-white bg-gradient-to-r from-blue-400 to-red-500 hover:from-red-500 hover:to-blue-400 font-medium rounded-lg text-sm w-full text-center h-10 '
+                        handleClick={() => router.push('/')}
+                        label="Retour à l'accueil"
+                    />
 
-                    <button
+                    <Button
                         type='submit'
-                        className='text-white bg-pink-500 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                        onClick={() => {}}
-                    >
-                        M'inscrire
-                    </button>
+                        className=' text-white bg-gradient-to-r from-blue-400 to-green-500 hover:from-green-500 hover:to-blue-400 font-medium rounded-lg text-sm w-full h-10 text-center'
+                        handleClick={() => {}}
+                        label='Inscription'
+                    />
                 </div>
             </form>
         </>

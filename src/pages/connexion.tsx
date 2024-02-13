@@ -2,6 +2,7 @@ import { handleSignIn } from '@/auth/authFunctions'
 import router from 'next/router'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { NextPage } from 'next'
+import Button from '@/components/button'
 
 const Connexion: NextPage = () => {
     const [email, setEmail] = useState<string>('')
@@ -18,10 +19,13 @@ const Connexion: NextPage = () => {
 
     return (
         <>
-            <h1>Connexion</h1>
+            <h2>Connexion</h2>
             <form className='max-w-sm mx-auto' onSubmit={handleSubmit}>
                 <div className='mb-5'>
-                    <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    <label
+                        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                        htmlFor='email'
+                    >
                         Adresse email
                     </label>
                     <input
@@ -37,7 +41,10 @@ const Connexion: NextPage = () => {
                     />
                 </div>
                 <div className='mb-5'>
-                    <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    <label
+                        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                        htmlFor='password'
+                    >
                         Mot de passe
                     </label>
                     <input
@@ -52,22 +59,20 @@ const Connexion: NextPage = () => {
                     />
                 </div>
 
-                <div className='flex flex-row justify-between'>
-                    <button
+                <div className='flex flex-col-reverse gap-y-3 justify-center gap-x-4'>
+                    <Button
                         type='button'
-                        className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                        onClick={() => router.push('/')}
-                    >
-                        Retour
-                    </button>
+                        className='text-white bg-gradient-to-r from-blue-400 to-red-500 hover:from-red-500 hover:to-blue-400 font-medium rounded-lg text-sm w-full text-center h-10 '
+                        handleClick={() => router.push('/')}
+                        label="Retour à l'accueil"
+                    />
 
-                    <button
+                    <Button
                         type='submit'
-                        className='text-white bg-pink-500 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                        onClick={() => {}}
-                    >
-                        Se connecter
-                    </button>
+                        className=' text-white bg-gradient-to-r from-blue-400 to-purple-500 hover:from-purple-500 hover:to-blue-400 font-medium rounded-lg text-sm w-full h-10 text-center'
+                        handleClick={() => {}}
+                        label='Connexion'
+                    />
                 </div>
             </form>
         </>

@@ -12,7 +12,12 @@ html {
 h1 {
     font-family: 'Cookie', sans-serif;
 
-    @apply text-center text-pink-50 text-5xl my-4
+    @apply text-center text-pink-50 my-4 text-4xl lg:text-5xl
+}
+
+h2 {
+    font-family: 'Cookie', sans-serif;
+    @apply text-center text-pink-50 my-4 text-3xl lg:text-4xl
 }
 
 * {
