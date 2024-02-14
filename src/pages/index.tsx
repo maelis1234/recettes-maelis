@@ -8,7 +8,6 @@ import RecipeCard from '@/components/recipeCard'
 import { CategoryEnum, Recette } from '@/utils/interfaces'
 import SearchBar from '@/components/search-bar'
 import { removeAccents } from '@/utils/remove-accents.utils'
-import { useAuth } from '@/auth/AuthContext'
 
 const Index: NextPage = () => {
     const [recettes, setRecettes] = useState<Recette[]>([])
@@ -114,8 +113,6 @@ const Index: NextPage = () => {
         }
     }
 
-    const connectedUser = useAuth()
-
     return (
         <div>
             <Head>
@@ -138,7 +135,7 @@ const Index: NextPage = () => {
                     resetSearch={handleResetSearch}
                 />
                 {/* Liste des recettes */}
-                <div className='flex flex-row flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10 lg:mx-96'>
+                <div className='flex flex-wrap my-8 gap-x-8 gap-y-8 overflow-auto justify-center mx-10'>
                     {handleDisplayRecettes().map((recette: Recette) => (
                         <RecipeCard
                             key={recette.id}
