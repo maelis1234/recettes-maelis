@@ -34,11 +34,11 @@ const RecipeCard = ({ recette, handleView }: Props) => {
                         transition={{ duration: 0.3 }}
                         className='fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black bg-opacity-50'
                     >
-                        <div className='text-black bg-pink-100 w-[60%] h-3/4 rounded-3xl p-6 overflow-y-auto'>
+                        <div className='text-black bg-pink-100 lg:w-[60%] lg:h-3/4 h-[90%] w-[95%] rounded-3xl p-6 overflow-y-auto'>
                             {recette.viewing && (
                                 <div className='flex flex-col items-center gap-y-8 h-full'>
-                                    <div className='flex flex-row gap-x-8 w-full'>
-                                        <div className='flex flex-col gap-y-6 w-1/3'>
+                                    <div className='lg:flex lg:flex-row gap-x-8 w-full'>
+                                        <div className='flex flex-col lg:gap-y-6 gap-y-2 lg:w-1/3'>
                                             <Button
                                                 className='border bg-pink-500 text-white hover:bg-pink-400 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 duration-300 w-6 h-6 rounded-full'
                                                 label='x'
@@ -48,24 +48,24 @@ const RecipeCard = ({ recette, handleView }: Props) => {
                                                 }}
                                                 type='button'
                                             />
-                                            <h3 className='text-center text-2xl font-semibold'>
+                                            <h3 className='text-center text-xl  font-semibold'>
                                                 {recette.titre}
                                             </h3>
                                             <p className='text-center'>
                                                 {recette.description}
                                             </p>
-                                            <div>
+                                            <div className='w-40 h-40 mx-auto lg:w-96 lg:h-96'>
                                                 <Image
                                                     src={imagePath}
                                                     alt={`${recette.titre}_image`}
                                                     width={230}
                                                     height={230}
-                                                    className='rounded-lg mx-auto'
+                                                    className='rounded-lg'
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className='w-2/3 flex flex-col gap-y-6 justify-center max-h-full text-sm'>
+                                        <div className='lg:w-2/3 flex flex-col gap-y-6 justify-center max-h-full text-sm'>
                                             <div>
                                                 <h4 className='font-semibold'>
                                                     Ingrédients
@@ -134,7 +134,7 @@ const RecipeCard = ({ recette, handleView }: Props) => {
 
             <div className='mt-auto pb-1 flex gap-x-6 mx-auto'>
                 <Button
-                    label={recette.viewing ? 'Voir moins' : 'Voir plus'}
+                    label={'Voir plus'}
                     type='button'
                     className='bg-gradient-to-r from-rose-400 to-fuchsia-500 hover:from-fuchsia-500 hover:to-rose-400 text-white rounded-lg w-24 h-8 text-sm'
                     handleClick={() => {

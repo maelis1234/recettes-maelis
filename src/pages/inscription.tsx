@@ -72,7 +72,7 @@ const Inscription: NextPage = () => {
                 <div className='mb-5'>
                     <label
                         htmlFor='confirmationPassword'
-                        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+                        className='block mb-2 text-sm font-medium text-gray-900'
                     >
                         Confirmation du mot de passe
                     </label>
