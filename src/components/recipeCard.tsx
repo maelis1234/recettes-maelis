@@ -5,7 +5,7 @@ import { CiEdit, CiTrash } from 'react-icons/ci'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { getImageUrl } from '@/firebase/storageFunctions'
+import { getImageUrl } from '@/firebase/imageFunctions'
 
 interface Props {
     recette: Recette

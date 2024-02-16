@@ -10,7 +10,16 @@ export interface Recette {
     viewing: boolean
     titre: string
     description: string
-    category: CategoryEnum
-    ingredients: []
-    instructions: []
+    category: CategoryEnum | undefined
+    ingredients: string[]
+    instructions: string[]
+}
+
+export interface RecetteForm {
+    titre: string
+    description: string
+    category: CategoryEnum | undefined
+    ingredients: string[]
+    instructions: string[]
+    image: File | null
 }

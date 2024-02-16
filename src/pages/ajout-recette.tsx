@@ -7,7 +7,9 @@ import router from 'next/router'
 import Select from 'react-select'
 import { toast } from 'react-toastify'
 import Button from '@/components/button'
-import { CategoryEnum } from '@/utils/interfaces'
+import { CategoryEnum, RecetteForm } from '@/utils/interfaces'
+import { uploadImage } from '@/firebase/imageFunctions'
+import UploadImage from '@/components/uploadImage'
 
 const AjoutRecette: NextPage = () => {
     const recettesCollectionRef = collection(database, 'recettes')
@@ -19,12 +21,13 @@ const AjoutRecette: NextPage = () => {
         { label: 'Petit dej', value: CategoryEnum.petitDej },
     ]
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<RecetteForm>({
         titre: '',
         description: '',
-        category: '',
+        category: undefined,
         ingredients: [''],
         instructions: [''],
+        image: null,
     })
 
     const handleChangeField = (
@@ -51,30 +54,56 @@ const AjoutRecette: NextPage = () => {
         setForm({ ...form, [type]: updatedArray })
     }
 
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+
+        if (file) {
+            const isJpg =
+                file.type === 'image/jpeg' || file.type === 'image/jpg'
+
+            if (!isJpg) {
+                toast.error('Veuillez sélectionner un fichier JPG.')
+            } else {
+                setForm({ ...form, image: file })
+            }
+        }
+    }
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (
             !form.titre ||
-            form.description.length === 0 ||
-            form.category.length === 0 ||
+            !form.description ||
+            !form.category ||
             form.ingredients.length === 0 ||
-            form.instructions.length === 0
+            form.instructions.length === 0 ||
+            form.image === null
         ) {
-            toast.error('Merci de remplir tous les champs.')
+            toast.error(
+                "Merci de remplir tous les champs et/ou d'ajouter une image."
+            )
             return
         }
 
         const recetteId = form.titre.toLowerCase().split(' ').join('-')
         const recetteDocRef = doc(recettesCollectionRef, recetteId)
 
-        await setDoc(recetteDocRef, form)
+        await setDoc(recetteDocRef, {
+            titre: form.titre,
+            description: form.description,
+            category: form.category,
+            ingredients: form.ingredients,
+            instructions: form.instructions,
+        })
+        await uploadImage(form.image, recetteId)
         toast('🧁 Recette ajoutée avec succès !')
         setForm({
             titre: '',
             description: '',
-            category: '',
+            category: undefined,
             ingredients: [''],
             instructions: [''],
+            image: null,
         })
     }
 
@@ -88,7 +117,7 @@ const AjoutRecette: NextPage = () => {
                 />
             </Head>
             <h1>Ajouter une recette</h1>
-            <div className='flex flex-col items-center h-screen'>
+            <div className='flex flex-col items-center'>
                 <Button
                     label="Retour à l'accueil"
                     className='bg-gradient-to-r from-blue-300 to-pink-400 hover:from-pink-400 hover:to-blue-300 text-white rounded-lg h-8 w-36 text-sm mb-4'
@@ -134,11 +163,13 @@ const AjoutRecette: NextPage = () => {
                     <div className='flex flex-col w-72'>
                         <label htmlFor='category'>Catégorie</label>
                         <Select
+                            id='category'
                             options={categories}
                             onChange={(selectedOption) =>
                                 setForm({
                                     ...form,
-                                    category: selectedOption?.value ?? '',
+                                    category:
+                                        selectedOption?.value ?? undefined,
                                 })
                             }
                             inputValue={''}
@@ -230,6 +261,17 @@ const AjoutRecette: NextPage = () => {
                         />
                     </label>
                     <br />
+
+                    <UploadImage onChange={handleFileChange} />
+
+                    {form.image && (
+                        <img
+                            src={URL.createObjectURL(form.image)}
+                            alt='image'
+                            className='w-32 h-32 rounded-lg mt-2 mx-auto'
+                        />
+                    )}
+
                     <Button
                         label='Ajouter la recette'
                         type='submit'
