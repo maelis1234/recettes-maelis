@@ -4,7 +4,8 @@ import { useAuth } from '@/auth/AuthContext'
 import { CiEdit, CiTrash } from 'react-icons/ci'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getImageUrl } from '@/firebase/storageFunctions'
 
 interface Props {
     recette: Recette
@@ -14,8 +15,23 @@ interface Props {
 const RecipeCard = ({ recette, handleView }: Props) => {
     const connectedUser = useAuth()
     const [isViewing, setIsViewing] = useState<boolean>(false)
+    const [imageUrl, setImageUrl] = useState<string>('')
 
-    const imagePath = `/images_recettes/${recette.id}.jpg`
+    useEffect(() => {
+        const fetchImageUrl = async () => {
+            try {
+                const url = await getImageUrl(recette.id)
+                setImageUrl(url)
+            } catch (error) {
+                console.error(
+                    "Erreur lors de la récupération de l'URL de l'image :",
+                    error
+                )
+            }
+        }
+
+        fetchImageUrl()
+    }, [recette.id])
 
     return (
         <div
@@ -56,7 +72,7 @@ const RecipeCard = ({ recette, handleView }: Props) => {
                                             </p>
                                             <div className='w-40 h-40 mx-auto lg:w-96 lg:h-96'>
                                                 <Image
-                                                    src={imagePath}
+                                                    src={imageUrl}
                                                     alt={`${recette.titre}_image`}
                                                     width={230}
                                                     height={230}
@@ -124,7 +140,7 @@ const RecipeCard = ({ recette, handleView }: Props) => {
 
             <div>
                 <Image
-                    src={imagePath}
+                    src={imageUrl}
                     alt={`${recette.titre}_image`}
                     width={150}
                     height={150}

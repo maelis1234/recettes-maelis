@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, setDoc, doc } from 'firebase/firestore'
 import { database } from '../../firebase.config'
 import Head from 'next/head'
 import router from 'next/router'
@@ -64,7 +64,10 @@ const AjoutRecette: NextPage = () => {
             return
         }
 
-        await addDoc(recettesCollectionRef, form)
+        const recetteId = form.titre.toLowerCase().split(' ').join('-')
+        const recetteDocRef = doc(recettesCollectionRef, recetteId)
+
+        await setDoc(recetteDocRef, form)
         toast('🧁 Recette ajoutée avec succès !')
         setForm({
             titre: '',
