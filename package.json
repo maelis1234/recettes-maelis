@@ -12,7 +12,7 @@
         "@firebase/auth": "^1.6.1",
         "@firebase/storage": "^0.12.2",
         "@types/node": "20.3.1",
-        "@types/react": "18.2.12",
+        "@types/react": "18.2.57",
         "@types/react-dom": "18.2.5",
         "firebase": "^10.8.1",
         "framer-motion": "^11.0.3",
