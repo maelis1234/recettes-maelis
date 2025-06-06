@@ -14,7 +14,7 @@
         "@firebase/auth": "^1.9.1",
         "@types/react": "18.3.19",
         "@types/react-dom": "18.3.5",
-        "firebase": "^11.5.0",
+        "firebase": "^11.7.3",
         "framer-motion": "^11.18.2",
         "next": "^15.2.4",
         "protobufjs": "^7.4.0",
