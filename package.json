@@ -9,7 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@firebase/storage": "^0.13.6",
+        "@firebase/storage": "^0.13.10",
         "@types/node": "20.17.25",
         "@firebase/auth": "^1.9.1",
         "@types/react": "18.3.19",
