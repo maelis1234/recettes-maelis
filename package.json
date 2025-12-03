@@ -9,14 +9,14 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@firebase/storage": "^0.13.6",
         "@types/node": "20.19.11",
-        "@firebase/auth": "^1.9.1",
+        "@firebase/storage": "^0.14.0",
+        "@firebase/auth": "^1.11.0",
         "@types/react": "18.3.19",
         "@types/react-dom": "18.3.5",
         "firebase": "^11.10.0",
         "framer-motion": "^11.18.2",
-        "next": "^15.4.7",
+        "next": "^15.5.2",
         "protobufjs": "^7.4.0",
         "react": "18.3.1",
         "react-dom": "18.3.1",
@@ -24,7 +24,7 @@
         "react-select": "^5.10.1",
         "react-toastify": "^10.0.6",
         "semver": "^7.7.1",
-        "typescript": "5.8.2"
+        "typescript": "5.9.2"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.7",
